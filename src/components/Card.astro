@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { slugifyStr } from "@/utils/slugify";
+import { getPath } from "@/utils/getPath";
+import Datetime from "./Datetime.astro";
+
+type Props = {
+  variant?: "h2" | "h3";
+} & CollectionEntry<"blog">;
+
+const { variant: Heading = "h2", id, data, filePath } = Astro.props;
+
+const { title, description, featured, ...props } = data;
+---
+
+<li class="my-6 relative">
+  <svg
+    class:list={[
+      "absolute -left-[1.8125rem] top-[0.525rem] size-2.5",
+      featured ? "fill-foreground" : "fill-background stroke-foreground stroke-[1.5]"
+    ]}
+    viewBox="0 0 10 10"
+    aria-label={featured ? "featured" : "post"}
+  >
+    <circle cx="5" cy="5" r={featured ? 5 : 4} />
+  </svg>
+  <a
+    href={getPath(id, filePath)}
+    class:list={[
+      "inline-block text-foreground",
+      "decoration-accent underline-offset-4 hover:underline",
+      "focus-visible:no-underline focus-visible:underline-offset-0",
+    ]}
+  >
+    <Heading
+      style={{ viewTransitionName: slugifyStr(title) }}
+      class="text-lg font-title font-bold"
+    >
+      {title}
+    </Heading>
+  </a>
+  <Datetime {...props} hideIcon />
+  <p>{description}</p>
+</li>

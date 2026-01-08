@@ -1,0 +1,97 @@
+@import "tailwindcss";
+@import "./typography.css";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+:root,
+html[data-theme="light"] {
+  --background: #F7F5F0;
+  --foreground: #1A1A1A;
+  --accent: #2D7D7B;
+  --muted: #E8E6E1;
+  --border: #D4D1C9;
+  --accent-secondary: #8B6F4E;
+}
+
+html[data-theme="dark"] {
+  --background: #1A1D23;
+  --foreground: #E8E6E1;
+  --accent: #E6A756;
+  --muted: #2A2F38;
+  --border: #3D434F;
+  --accent-secondary: #7BA3A1;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent-secondary: var(--accent-secondary);
+  --font-sans: "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-title: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-accent/75;
+    scrollbar-width: auto;
+    scrollbar-color: var(--color-muted) transparent;
+  }
+  html {
+    @apply overflow-y-scroll scroll-smooth;
+  }
+  body {
+    @apply flex min-h-svh flex-col bg-background font-sans text-foreground text-[17px] leading-relaxed selection:bg-accent/75 selection:text-background;
+  }
+  a,
+  button {
+    @apply outline-offset-1 outline-accent focus-visible:no-underline focus-visible:outline-2 focus-visible:outline-dashed;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+@utility max-w-app {
+  @apply max-w-4xl;
+}
+
+@utility app-layout {
+  @apply w-full max-w-app px-4;
+  /* Asymmetric layout: left margin = 1/4 of available space */
+  margin-left: max(1rem, calc((100vw - 56rem) / 4));
+  margin-right: auto;
+}
+
+.active-nav {
+  @apply text-accent;
+}
+
+/* Source: https://piccalil.li/blog/a-more-modern-css-reset/ */
+/* Anything that has been anchored to should have extra scroll margin */
+:target {
+  scroll-margin-block: 1rem;
+}
+
+/* Subtle cartographic grid texture for main content */
+#main-content {
+  position: relative;
+}
+
+#main-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.15;
+}

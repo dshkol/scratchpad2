@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+
+const projects = await getCollection("projects", ({ data }) => !data.draft);
+
+// Sort by featured first, then by startDate
+const sortedProjects = projects.sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return new Date(b.data.startDate).getTime() - new Date(a.data.startDate).getTime();
+});
+
+// Group into two sections
+const experiments = sortedProjects.filter(p =>
+  ["tool", "analysis", "experiment"].includes(p.data.type)
+);
+const software = sortedProjects.filter(p => p.data.type === "r-package");
+---
+
+<Layout title="Projects | Dmitry Shkolnik">
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="app-layout pb-12 pt-8">
+    {experiments.length > 0 && (
+      <section class="mb-12 relative pl-6 border-l-2 border-accent">
+        <span class="absolute left-0 top-1 -translate-x-[calc(100%+0.35rem)] text-[10px] font-title font-bold uppercase tracking-widest text-accent whitespace-nowrap [writing-mode:vertical-lr] rotate-180">
+          Experiments
+        </span>
+        <div class="space-y-2">
+          {experiments.map((project) => (
+            <a
+              href={project.data.links?.demo || `/projects/${project.id}`}
+              target={project.data.links?.demo ? "_blank" : undefined}
+              rel={project.data.links?.demo ? "noopener noreferrer" : undefined}
+              class="block p-4 -mx-4 border border-transparent hover:border-foreground hover:shadow-[3px_3px_0px_var(--foreground)] transition-all group"
+            >
+              <h3 class="font-title font-bold text-lg group-hover:text-accent transition-colors">
+                {project.data.title}
+              </h3>
+              <p class="text-foreground/70 mt-1 text-sm">
+                {project.data.description}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {software.length > 0 && (
+      <section class="mb-10 relative pl-6 border-l-2 border-accent-secondary">
+        <span class="absolute left-0 top-1 -translate-x-[calc(100%+0.35rem)] text-[10px] font-title font-bold uppercase tracking-widest text-accent-secondary whitespace-nowrap [writing-mode:vertical-lr] rotate-180">
+          Software
+        </span>
+        <div class="space-y-2">
+          {software.map((project) => (
+            <a
+              href={project.data.links?.docs || `/projects/${project.id}`}
+              target={project.data.links?.docs ? "_blank" : undefined}
+              rel={project.data.links?.docs ? "noopener noreferrer" : undefined}
+              class="block p-4 -mx-4 border border-transparent hover:border-foreground hover:shadow-[3px_3px_0px_var(--foreground)] transition-all group"
+            >
+              <h3 class="font-title font-bold text-lg group-hover:text-accent transition-colors">
+                {project.data.title}
+              </h3>
+              <p class="text-foreground/70 mt-1 text-sm">
+                {project.data.description}
+              </p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </main>
+  <Footer />
+</Layout>

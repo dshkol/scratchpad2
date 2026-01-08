@@ -1,0 +1,161 @@
+---
+// TableOfContents.astro
+// Floating sidebar TOC that appears on xl+ screens in the right margin
+---
+
+<nav
+  id="toc-sidebar"
+  class="hidden xl:block fixed top-56 w-48 text-sm"
+  aria-label="Table of Contents"
+>
+  <ul id="toc-list" class="space-y-2 border-l border-border pl-3">
+    <!-- Populated by JS -->
+  </ul>
+</nav>
+
+<style>
+  #toc-sidebar {
+    /* Position in the right margin space */
+    left: calc(max(1rem, (100vw - 56rem) / 4) + 56rem + 2rem);
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+  }
+
+  #toc-sidebar::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  #toc-sidebar::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 1px;
+  }
+
+  #toc-list li a {
+    display: block;
+    color: var(--foreground);
+    opacity: 0.6;
+    transition: opacity 0.15s, color 0.15s;
+    line-height: 1.4;
+  }
+
+  #toc-list li a:hover {
+    opacity: 1;
+  }
+
+  #toc-list li a.active {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  #toc-list li.depth-3 a {
+    padding-left: 0.75rem;
+    font-size: 0.8125rem;
+  }
+</style>
+
+<script is:inline>
+  (function() {
+    // Prevent duplicate initialization
+    if (window.__tocInitialized) return;
+    window.__tocInitialized = true;
+
+    let currentObserver = null;
+
+    function initTableOfContents() {
+      const tocList = document.getElementById("toc-list");
+      const tocSidebar = document.getElementById("toc-sidebar");
+      const article = document.getElementById("article");
+
+      // Clean up previous observer
+      if (currentObserver) {
+        currentObserver.disconnect();
+        currentObserver = null;
+      }
+
+      if (!tocList || !tocSidebar || !article) return;
+
+      // Clear existing items
+      tocList.innerHTML = "";
+
+      // Reset display
+      tocSidebar.style.display = "";
+
+      // Extract headings from article
+      const headings = article.querySelectorAll("h2, h3");
+
+      if (headings.length === 0) {
+        tocSidebar.style.display = "none";
+        return;
+      }
+
+      // Build TOC
+      headings.forEach((heading) => {
+        const id = heading.id;
+        if (!id) return;
+
+        const li = document.createElement("li");
+        li.className = heading.tagName === "H3" ? "depth-3" : "depth-2";
+
+        const a = document.createElement("a");
+        a.href = `#${id}`;
+        a.textContent = heading.textContent.replace(/#$/, "").trim();
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          heading.scrollIntoView({ behavior: "smooth", block: "start" });
+          history.pushState(null, "", `#${id}`);
+        });
+
+        li.appendChild(a);
+        tocList.appendChild(li);
+      });
+
+      // Highlight active section with IntersectionObserver
+      const observerOptions = {
+        rootMargin: "-80px 0px -70% 0px",
+        threshold: 0,
+      };
+
+      let currentActive = null;
+
+      currentObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.id;
+          const tocLink = tocList.querySelector(`a[href="#${id}"]`);
+
+          if (entry.isIntersecting) {
+            if (currentActive) {
+              currentActive.classList.remove("active");
+            }
+            if (tocLink) {
+              tocLink.classList.add("active");
+              currentActive = tocLink;
+            }
+          }
+        });
+      }, observerOptions);
+
+      headings.forEach((heading) => {
+        if (heading.id) {
+          currentObserver.observe(heading);
+        }
+      });
+    }
+
+    // Run after a small delay to ensure DOM is ready
+    function runToc() {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(initTableOfContents);
+      });
+    }
+
+    // Initial run
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", runToc);
+    } else {
+      runToc();
+    }
+
+    // Re-run on page transitions
+    document.addEventListener("astro:after-swap", runToc);
+  })();
+</script>

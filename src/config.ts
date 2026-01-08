@@ -1,0 +1,23 @@
+export const SITE = {
+  website: "https://dshkol.com/",
+  author: "Dmitry Shkolnik",
+  profile: "https://dshkol.com/",
+  desc: "Data scientist based in Vancouver, Canada. Spatial analysis, demographics, urban planning, and R packages for Canadian data.",
+  title: "Dmitry Shkolnik",
+  ogImage: "og-image.jpg",
+  lightAndDarkMode: true,
+  postPerIndex: 5,
+  postPerPage: 10,
+  scheduledPostMargin: 15 * 60 * 1000,
+  showArchives: false,
+  showBackButton: true,
+  editPost: {
+    enabled: false,
+    text: "",
+    url: "",
+  },
+  dynamicOgImage: true,
+  dir: "ltr",
+  lang: "en",
+  timezone: "America/Vancouver",
+} as const;

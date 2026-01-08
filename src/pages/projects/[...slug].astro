@@ -1,0 +1,125 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import LinkButton from "@/components/LinkButton.astro";
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const { title, description, type, tags, links, startDate, endDate } = project.data;
+
+const typeLabels = {
+  "r-package": "R Package",
+  "tool": "Tool",
+  "analysis": "Data Analysis",
+  "experiment": "Experiment"
+};
+
+function formatDateRange(start: Date, end?: Date) {
+  const startYear = start.getFullYear();
+  
+  if (!end) {
+    return `${startYear} - Present`;
+  }
+  
+  const endYear = end.getFullYear();
+  
+  if (startYear === endYear) {
+    return `${startYear}`;
+  }
+  
+  return `${startYear} - ${endYear}`;
+}
+---
+
+<Layout title={`${title} | Dmitry Shkolnik`} description={description}>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="app-layout pb-12">
+    <article class="max-w-3xl">
+      <header class="mb-8">
+        <div class="flex items-center gap-2 text-sm text-foreground/60 mb-2">
+          <span class="px-2 py-0.5 rounded-full bg-accent/10 text-accent text-xs">
+            {typeLabels[type]}
+          </span>
+          <span>•</span>
+          <span>{formatDateRange(startDate, endDate)}</span>
+        </div>
+        
+        <h1 class="text-3xl font-bold sm:text-4xl mb-3">{title}</h1>
+        <p class="text-lg text-foreground/70">{description}</p>
+        
+        {/* Links */}
+        {(links.github || links.demo || links.docs || links.cran) && (
+          <div class="flex flex-wrap gap-3 mt-4">
+            {links.github && (
+              <LinkButton
+                href={links.github}
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-foreground/5 hover:bg-foreground/10 transition-colors"
+                target="_blank"
+              >
+                <IconGitHub class="w-4 h-4" />
+                GitHub
+              </LinkButton>
+            )}
+            {links.docs && (
+              <LinkButton
+                href={links.docs}
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-foreground/5 hover:bg-foreground/10 transition-colors"
+                target="_blank"
+              >
+                Docs
+              </LinkButton>
+            )}
+            {links.cran && (
+              <LinkButton
+                href={links.cran}
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-foreground/5 hover:bg-foreground/10 transition-colors"
+                target="_blank"
+              >
+                CRAN
+              </LinkButton>
+            )}
+            {links.demo && (
+              <LinkButton
+                href={links.demo}
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
+                target="_blank"
+              >
+                Live Demo
+              </LinkButton>
+            )}
+          </div>
+        )}
+        
+        {/* Tags */}
+        {tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-4">
+            {tags.map(tag => (
+              <span class="px-2 py-0.5 text-xs rounded-full bg-foreground/5 text-foreground/60">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+      
+      <div class="app-prose">
+        <Content />
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>
