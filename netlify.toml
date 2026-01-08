@@ -1,0 +1,32 @@
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Proxy /cmt to the CMT Netlify site
+[[redirects]]
+  from = "/cmt/*"
+  to = "https://cmt.dshkol.com/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/cmt"
+  to = "https://cmt.dshkol.com"
+  status = 200
+  force = true
+
+# Proxy /thedaily to The Daily Netlify site
+[[redirects]]
+  from = "/thedaily/*"
+  to = "https://thedaily.dshkol.com/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/thedaily"
+  to = "https://thedaily.dshkol.com"
+  status = 200
+  force = true
