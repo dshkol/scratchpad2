@@ -5,28 +5,15 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Proxy /cmt to the CMT Netlify site
+# Proxy Census Monkey Typewriter
 [[redirects]]
   from = "/cmt/*"
-  to = "https://cmt.dshkol.com/:splat"
+  to = "https://dshkolcmt.netlify.app/:splat"
   status = 200
-  force = true
 
-[[redirects]]
-  from = "/cmt"
-  to = "https://cmt.dshkol.com"
-  status = 200
-  force = true
-
-# Proxy /thedaily to The Daily Netlify site
+# Proxy The D-AI-LY
 [[redirects]]
   from = "/thedaily/*"
-  to = "https://thedaily.dshkol.com/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/thedaily"
-  to = "https://thedaily.dshkol.com"
+  to = "https://dshkol-thedaily.netlify.app/:splat"
   status = 200
   force = true
