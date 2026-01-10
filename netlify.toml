@@ -5,6 +5,12 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Redirect old /post/ URLs to new /posts/
+[[redirects]]
+  from = "/post/*"
+  to = "/posts/:splat"
+  status = 301
+
 # Proxy Census Monkey Typewriter
 [[redirects]]
   from = "/cmt/*"
