@@ -6,7 +6,7 @@ featured: true
 startDate: 2024-01-01
 tags: ["LLM", "Statistics Canada", "Automation", "AI"]
 links:
-  demo: "https://dshkol.com/thedaily"
+  demo: "https://dshkol.com/thedaily/"
   github: "https://github.com/dshkol/the-daily"
 ---
 

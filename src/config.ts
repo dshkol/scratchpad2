@@ -4,7 +4,7 @@ export const SITE = {
   profile: "https://dshkol.com/",
   desc: "Data scientist based in Vancouver, Canada. Spatial analysis, demographics, urban planning, and R packages for Canadian data.",
   title: "Dmitry Shkolnik",
-  ogImage: "og-image.jpg",
+  ogImage: "og.png",
   lightAndDarkMode: true,
   postPerIndex: 5,
   postPerPage: 10,

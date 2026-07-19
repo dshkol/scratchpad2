@@ -16,7 +16,7 @@ categories:
   - analysis
 ---
 
-While putting together the data for the longer post on [measuring and visualizing diversity and segregation in Canadian cities](https://www.dshkol.com/2018/diversity-and-segregation-canadian-cities/), I wanted to see if there was an intuitive way to compare similarity of cities across multiple Census demographic variables at the same time. Comparing across many Census variables at once requires us to think across many dimensions at once. 
+While putting together the data for the longer post on [measuring and visualizing diversity and segregation in Canadian cities](/posts/diversity-and-segregation-canadian-cities/), I wanted to see if there was an intuitive way to compare similarity of cities across multiple Census demographic variables at the same time. Comparing across many Census variables at once requires us to think across many dimensions at once.
 
 As our eyes really perceive in at best four dimensions, visualizing many dimensions requires a reduction in the number of dimensions from many to the two (or three) dimensions that best allow for visual interpretation. Typically this is done through dimension reducing approaches like principle components but, increasingly, t-SNE has become a preferred technique for embedding highly dimensional data in to lower dimensional space while preserving local structure. 
 

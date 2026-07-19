@@ -17,7 +17,7 @@ categories:
 
 This was a short post that turned into a longer post. The purpose of short post was to highlight and share a new package we have been working on to improve access to Canadian statistical data. This then turned into a post about domestic tourism patterns, and ultimately a discussion about two different types of visualization techniques for comparing changes over time. 
 
-[Jens](@vb_jens) and I have been working on an R package to work with Statistics Canada's public datasets (traditionally referred to as CANSIM tables). I'll touch more on the purpose of this package shortly, but as the package heads towards completion it needs bug-fixing, tidying, and thoughtful critique ahead of any future CRAN release, and that requires more eyeballs on the code, and more users playing around with the package. 
+Jens and I have been working on an R package to work with Statistics Canada's public datasets (traditionally referred to as CANSIM tables). I'll touch more on the purpose of this package shortly, but as the package heads towards completion it needs bug-fixing, tidying, and thoughtful critique ahead of any future CRAN release, and that requires more eyeballs on the code, and more users playing around with the package.
 
 As tourism statistics are what I do in my day-job, I thought it would be neat to showcase this packages abilities with some tourism data. In this case, we will look at some trends in domestic tourism spending and visitation in Canadian Metropolitan Areas from Statistics Canada's Travel Survey of Residents of Canada dataset. 
 
