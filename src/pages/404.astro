@@ -9,6 +9,13 @@ import { SITE } from "@/config";
 <Layout title={`404 Not Found | ${SITE.title}`} noindex>
   <Header />
 
+  <!-- Report the requested URL to GoatCounter instead of the canonical /404 -->
+  <script is:inline>
+    window.goatcounter = {
+      path: location.pathname + location.search,
+    };
+  </script>
+
   <main
     id="main-content"
     class="app-layout flex flex-1 items-center justify-center"
