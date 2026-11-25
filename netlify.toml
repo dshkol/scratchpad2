@@ -26,7 +26,7 @@
 
 # Proxy the Regionalization Workbench
 [[redirects]]
-  from = "/regionalization-lab/*"
+  from = "/regionalization-workbench/*"
   to = "https://dshkol-regionalization-lab.netlify.app/:splat"
   status = 200
   force = true
